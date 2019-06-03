@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+	<div class="content-section">
+	    <img class="front-img" src="{{ url_for('static', filename='pictures/LOGO.png') }}" alt="Logo">
+		<h1>{{ legend }}</h1>
+		<form method="POST" action="" enctype="multipart/form-data">
+			{{ form.hidden_tag() }}
+			<fieldset class="form-group">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+						{{ form.custom_email.label(class="form-control-label") }}
+
+						{% if form.custom_email.errors %}
+							{{ form.custom_email(class="form-control form-control is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.custom_email.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.custom_email(class="form-control form-control", placeholder="@yourbusiness.com.au")}}
+						{% endif %}
+					</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+				        {{ form.submit(class="btn btn-outline-info")}}
+			        </div>
+                </div>
+			</fieldset>
+		</form>
+	</div>
+
+{% endblock content %}

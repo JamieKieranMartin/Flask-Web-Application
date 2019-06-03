@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block content %}
+	<div class="content-section">
+	    <img class="front-img" src="{{ url_for('static', filename='pictures/LOGO.png') }}" alt="Logo">
+		<h1>{{ legend }}</h1>
+		<p>Thank You For Upgrading! Search for an available domain and input it below.</p>
+		<div class="embed-responsive embed-responsive-21by9">
+                                    <iframe
+                                        style="width: 100%; height: 100%; overflow: hidden;"
+                                        frameborder="0"
+                                        scrolling="yes"
+                                        src="https://instantdomainsearch.com/widget/liquid/">
+                                        <a href="https://instantdomainsearch.com/">Instant Domain Search</a>
+                                        </iframe>
+                                </div>
+		<form method="POST" action="" enctype="multipart/form-data">
+			{{ form.hidden_tag() }}
+			<fieldset class="form-group">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+						{{ form.custom_domain.label(class="form-control-label") }}
+
+						{% if form.custom_domain.errors %}
+							{{ form.custom_domain(class="form-control form-control is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.custom_domain.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.custom_domain(class="form-control form-control")}}
+						{% endif %}
+					</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+				        {{ form.submit(class="btn btn-outline-info")}}
+			        </div>
+                </div>
+			</fieldset>
+		</form>
+	</div>
+
+{% endblock content %}

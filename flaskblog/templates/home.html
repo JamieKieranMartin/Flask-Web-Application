@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% include 'nav.html' %}
+    <section>
+        <article class="flex-container" id="about">
+            <div class="item">
+                <div class="img-cont">
+                    <img src="{{ url_for('static', filename='pictures/**********.png') }}" alt="Hassle-Free Service">
+                </div>
+                <h2>Hassle-Free</h2>
+                <p>
+                    We understand the hassle a website can be for a client,
+                    therefore by streamlining our services in our web application we seek to make it hassle-free for you, and do it for no extra cost. It's not rocket science.
+                </p>
+            </div>
+            <div class="item">
+                <div class="img-cont dwn">
+                    <img src="{{ url_for('static', filename='pictures/*************.png') }}" alt="You're In Control">
+                </div>
+                <h2>You're In Control</h2>
+                <p>
+                    Our web application builds you a website for free. We offer this as an alternative to website design, however still offer all the same functionality.
+                    Have your site up in minutes and customise your content exactly to your liking.
+                </p>
+            </div>
+            <div class="item">
+                <div class="img-cont">
+                    <img src="{{ url_for('static', filename='pictures/**************.png') }}" alt="Grow With Us">
+                </div>
+                <h2>Grow With Us</h2>
+                <p>
+                    Our team is constantly iterating our integrated systems and templates, giving you new features every month.
+                    We regularly update, refine and tweak to give you the best your money can get.
+                </p>
+            </div>
+        </article>
+
+    </section>
+
+    <section>
+        <h1>Website Packages</h1>
+        <article class="packages" id="packages">
+          <div>
+            <h2 class="small"><span>$0</span>/month</h2>
+            <p>A free website package. This is a good start for a small business. Advertisements cover the costs of running your site, meaning zero upfront or monthly costs for you.</p>
+            <ul>
+              <li>$0 upfront fee</li>
+              <li>No Contract. Cancel Anytime</li>
+              <li>Hassle Free Set Up</li>
+              <li>Sub Domain Creation</li>
+              <li>About Your Business</li>
+              <li>Business Location</li>
+              <li>Logo and Display Image Showcase</li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="small"><span>Upgrades</span></h2>
+            <p>We offer optional extras for those wanting a bit more. These extras will be charged on a monthly basis. This is a good start for businesses wanting quick growth and increased website functionality.</p>
+            <ul>
+                <li>Custom Web Domain - www.yourbusiness.com.au</li>
+                <li>Email Hosting - you@yourbusiness.com</li>
+                <li>SSL Encryption Certificate</li>
+                <li>Search Engine Optimisation</li>
+                <li>Advertisement free</li>
+                <li>Email Contact Forms</li>
+                <li>Image Galleries</li>
+                <li>Newsletters</li>
+                <li>Booking/Reservations</li>
+                <li>E-Commerce</li>
+                <li>Database Web-Access</li>
+            </ul>
+          </div>
+        </article>
+    </section>
+    <section>
+        <h1>Want To Stand Out?</h1>
+        <article class="custom-container">
+            <div class="flex-container">
+                <div class="item mob-hide mob-up my-1">
+                    <div class="img-cont dwn">
+                    <img src="{{ url_for('static', filename='pictures/***************.png') }}" alt="Design">
+                    </div>
+                </div>
+                <div class="item my-1 mob-up">
+                    <div class="img-cont">
+                    <img src="{{ url_for('static', filename='pictures/**************.png') }}" alt="Development">
+                    </div>
+                </div>
+                <div class="item mob-hide my-1">
+                    <div class="img-cont mob-up">
+                    <img src="{{ url_for('static', filename='pictures/*************.png') }}" alt="Consultation">
+                    </div>
+                </div>
+            </div>
+                 <h2>Get A Custom Website Tailored To Your Business</h2>
+                <div class="sideby">
+                    <p>
+                        Working with you we'll create your own custom design for your website.
+                        Once we have your new website designed we will contact you to discuss any further changes.
+                        After your website is published we allow a 7 day grace period for minor changes to be made.
+                    </p>
+                    <ul>
+                        <li>Starting from $350</li>
+                        <li>Designed For Your Business</>
+                        <li>Consultations Included</li>
+                        <li>Search Engine Optimised</li>
+                        <li>Mobile + Tablet Friendly</li>
+                        <li>Hands-On Support</li>
+                    </ul>
+                </div>
+          </article>
+    </section>
+    <section>
+        <h1 style="margin-bottom: 2.5%;">
+            How To Start
+        </h1>
+        <article class="about">
+            <img src="{{ url_for('static', filename='pictures/********************.jpg' ) }}">
+            <p>
+                Simply <a href="{{ url_for('users.register') }}">register</a>, <a href="{{ url_for('users.login') }}">login</a>, and <a href="{{ url_for('posts.new_post') }}">create</a> your free webpage. Once logged in you can then input your business information and we'll do the rest. Your website will be hosted under our domain name. To see what you can get in our free package, our mock Redlands Dot Business website is listed below.
+                <br><br>
+                <a href="{{ url_for('posts.post', domain='**************') }}">View our example website here.</a>
+                <br><br>
+                <a href="{{ url_for('main.privacy') }}">View Our Privacy Policy Here</a>
+                <br><br>
+                For enquiries, feel free to contact us using the contact form below.
+            </p>
+        </article>
+    </section>
+    {% include 'footer.html' %}
+{% endblock content %}

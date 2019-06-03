@@ -1,0 +1,257 @@
+{% extends "layout.html" %}
+{% block content %}
+	<section class="content-section">
+	    <img class="front-img" src="{{ url_for('static', filename='pictures/LOGO.png') }}" alt="Dot Business Logo">
+	</section>
+
+	<section>
+		<h1 class="account-heading text-left">Welcome, {{ current_user.name }}</h1>
+		{% if current_user.confirmed == False %}
+		    <article class="custom-container">
+    		    <p style="width: 100%">You have not confirmed your account. Please check your inbox (and your spam folder) - you should have received an email with a confirmation link.</p>
+                <p style="width: 100%">Didn't get the email? <a href="{{ url_for('users.resend_confirmation') }}">Resend</a>.</p>
+            </article>
+        {% elif current_user.domain %}
+            <article class="custom-container">
+                <h2 class="text-left">Your Website</h2>
+                <div class="flex-container">
+    				<p style="margin: auto; width: auto;" class="text-left"><a href="{{ url_for('posts.post', domain=current_user.domain) }}">{{ current_user.biz_name }}</a></p>
+    				<p style="margin: auto; width: auto;" class="article-content">ABN {{ current_user.abn }}</p>
+    				<p style="margin: auto; width: auto;" class="article-content">{{ current_user.contact_email }}</p>
+                </div>
+                {% if current_user.custom_domain %}
+                <div class="flex-container">
+    				<p style="margin: auto; width: auto;" class="article-content">{{ current_user.custom_domain }}</p>
+    				{% if current_user.custom_email %}
+    				<p style="margin: auto; width: auto;" class="article-content">{{ current_user.custom_email }}</p>
+    				{% endif %}
+                </div>
+                {% endif %}
+                <div class="button-container" style="padding: 2.5% 5%; width: 100%;">
+				    <a class="btn btn-secondary btn-sm m-1" style="line-height:40px;" href="{{ url_for('posts.update_post', domain=current_user.domain) }}">Update Website</a>
+				    <button class="btn btn-danger btn-sm m-1"type="button" data-toggle="modal" data-target="#deleteModal">Delete Website</button>
+				     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title" id="deleteModalLabel">Delete Website?</h1>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <form action="{{ url_for('posts.delete_post', domain=current_user.domain) }}" method="POST">
+                            	<input type="submit" class="btn btn-danger" value="Delete">
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+            	</div>
+            </article>
+            {% if current_user.no_ads == True %}
+            <div class="options-container">
+            <article class="custom-container my-3">
+                <h2 class="text-left">Custom Domain Name</h2>
+            	<div class="button-container" style="padding: 2.5% 5%; width: 100%;">
+            	    <button class="btn btn-primary btn-sm m-1" type="button">$21.99/month</button>
+            	    {% if not current_user.custom_domain %}
+				    <button class="btn btn-secondary btn-sm m-1" type="button" data-toggle="modal" data-target="#customdomainModal">Create Custom Domain</button>
+				    <div class="modal fade" id="customdomainModal" tabindex="-1" role="dialog" aria-labelledby="customdomainModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title" id="customdomainModalLabel">Add Custom Domain Name?</h1>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                            <div class="modal-body">
+                                <p style="width: auto;">By clicking create you accept and understand the $21.99/month fee.</p>
+                            </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <form action="{{ url_for('posts.upgrade', domain=current_user.domain) }}" method="POST">
+                            	<input type="submit" class="btn btn-success" value="Create">
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+				    {% elif current_user.custom_domain %}
+				    <button class="btn btn-success btn-sm m-1" type="button">Active</button>
+				    {% endif %}
+            	</div>
+            </article>
+
+            <article class="custom-container my-3">
+                <h2 class="text-left">Custom Email Hosting</h2>
+            	<div class="button-container" style="padding: 2.5% 5%; width: 100%;">
+            	    <button class="btn btn-primary btn-sm m-1" type="button">$9.99/month</button>
+            	    {% if not current_user.custom_email and current_user.custom_domain %}
+				    <button class="btn btn-secondary btn-sm m-1" type="button" data-toggle="modal" data-target="#customemailModal">Create Custom Email</button>
+				    <div class="modal fade" id="customemailModal" tabindex="-1" role="dialog" aria-labelledby="customemailModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title" id="customemailModalLabel">Add Custom Domain Name?</h1>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                            <div class="modal-body">
+                                <p style="width: auto;">By clicking create you accept and understand the $9.99/month fee.</p>
+                            </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <form action="{{ url_for('posts.upgrade_email', domain=current_user.domain) }}" method="POST">
+                            	<input type="submit" class="btn btn-success" value="Create">
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+				    {% elif current_user.custom_email %}
+				    <button class="btn btn-success btn-sm m-1" type="button">Active</button>
+				    {% elif not current_user.custom_domain %}
+				    <button class="btn btn-danger btn-sm m-1" type="button">Domain Name - Required</button>
+				    {% endif %}
+            	</div>
+            </article>
+
+            <article class="custom-container my-3">
+                <h2 class="text-left">Contact Form</h2>
+            	<div class="button-container" style="padding: 2.5% 5%; width: 100%;">
+            	    <button class="btn btn-primary btn-sm m-1" type="button">$3.99/month</button>
+            	    {% if current_user.contact_form == False %}
+				    <button class="btn btn-secondary btn-sm m-1" type="button" data-toggle="modal" data-target="#contactformModal">Create Contact Form</button>
+				    <div class="modal fade" id="contactformModal" tabindex="-1" role="dialog" aria-labelledby="contactformModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title" id="contactformModalLabel">Add Contact Form?</h1>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                            <div class="modal-body">
+                                <p style="width: auto;">By clicking create you accept and understand the $3.99/month fee.</p>
+                            </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <form action="{{ url_for('posts.charge', plan_type='***************', domain=current_user.domain) }}" method="POST">
+                            	<input type="submit" class="btn btn-success" value="Create">
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+				    {% elif current_user.contact_form == True %}
+				    <button class="btn btn-success btn-sm m-1" type="button">Active</button>
+				    {% endif %}
+            	</div>
+            </article>
+
+            <article  class="custom-container my-3">
+                <h2 class="text-left">Image Gallery</h2>
+                <div class="button-container" style="padding: 2.5% 5%; width: 100%;">
+                    <button class="btn btn-primary btn-sm m-1" type="button">$3.99/month</button>
+                    {% if current_user.gallery == False %}
+    				    <button class="btn btn-secondary btn-sm m-1" type="button" data-toggle="modal" data-target="#image_galleryModal">Create Image Gallery</button>
+    				    <div class="modal fade" id="image_galleryModal" tabindex="-1" role="dialog" aria-labelledby="image_galleryModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h1 class="modal-title" id="image_galleryModalLabel">Add Image Gallery?</h1>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                                <div class="modal-body">
+                                    <p style="width: auto;">By clicking create you accept and understand the $3.99/month fee.</p>
+                                </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <form action="{{ url_for('posts.charge', plan_type='*************', domain=current_user.domain) }}" method="POST">
+                                	<input type="submit" class="btn btn-success" value="Create">
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+				    {% elif current_user.gallery == True %}
+				        <button class="btn btn-success btn-sm m-1" type="button">Active</button>
+				        <a class="btn btn-secondary btn-sm m-1" style="line-height:40px;" href="{{ url_for('posts.image_gallery_add', domain=current_user.domain) }}">Add Image</a>
+				    {% endif %}
+                </div>
+            </article>
+
+            <article  class="custom-container my-3">
+                <h2 class="text-left">Collect Emails For Newsletters</h2>
+                <div class="button-container" style="padding: 2.5% 5%; width: 100%;">
+                    <button class="btn btn-primary btn-sm m-1" type="button">$2.99/month</button>
+                    {% if current_user.newsletter == False %}
+    				    <button class="btn btn-secondary btn-sm m-1" type="button" data-toggle="modal" data-target="#newsletterModal">Create Newsletter</button>
+    				    <div class="modal fade" id="newsletterModal" tabindex="-1" role="dialog" aria-labelledby="newsletterModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h1 class="modal-title" id="newsletterModalLabel">Collect Emails For Your Newsletter?</h1>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                                <div class="modal-body">
+                                    <p style="width: auto;">By clicking create you accept and understand the $2.99/month fee.</p>
+                                </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <form action="{{ url_for('posts.charge', plan_type='************', domain=current_user.domain) }}" method="POST">
+                                	<input type="submit" class="btn btn-success" value="Create">
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+				    {% elif current_user.newsletter == True %}
+				        <button class="btn btn-success btn-sm m-1" type="button">Active</button>
+				    {% endif %}
+                </div>
+            </article>
+
+            <article  class="custom-container my-3">
+                <h2 class="text-left">Remove Advertisements</h2>
+                {% if no_ads == False %}
+                <p class="text-left">Remove advertisements to gain access to extras</p>
+                <p class="text-left">By clicking create you accept and understand the $8.99/month fee.</p>
+                {% endif %}
+                <div class="button-container" style="padding: 2.5% 5%; width: 100%;">
+                    <button class="btn btn-primary btn-sm m-1" type="button">$8.99/month</button>
+                    <button class="btn btn-success btn-sm m-1" type="button">Active</button>
+            {% else %}
+
+                    <form action="{{ current_user.domain }}/************/charge" method="post">
+                        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                            data-key="{{ key }}"
+                            data-name="Remove Advertisements"
+                            data-description="$8.99 per month"
+                            data-image=""
+                            data-amount="899"
+                            data-locale="auto"
+                            data-label="Remove Ads"></script>
+                    </form>
+            {% endif %}
+                    </div>
+                </article>
+             </div>
+        {% else %}
+        <article class="custom-container">
+            <div class="button-container">
+                <a class="btn btn-secondary btn-sm m-1" style="line-height:40px;" href="{{ url_for('posts.new_post') }}">Create Website</a>
+            </div>
+        </article>
+        {% endif %}
+    </section>
+{% include 'footer.html' %}
+{% endblock content %}

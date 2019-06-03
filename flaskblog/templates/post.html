@@ -1,0 +1,191 @@
+{% extends "layout.html" %}
+{% block content %}
+	<section class="post-imgs" style="color:{{ website.color_1 }};background-color:{{ website.color_2 }};">
+	    {% if website.back_img %}
+	        <img id="background" style="opacity: 0.65" src="{{ url_for('static', filename='uploads/' + website.back_img) }}" alt="Business Background">
+	    {% endif %}
+	    {% if website.logo_img %}
+	        <img id="logo" src="{{ url_for('static', filename='uploads/' + website.logo_img) }}" alt="Business Logo">
+	  ` {% endif %}
+	</section>
+	<section class="post-about" style="color:{{ website.color_1 }};background-color:{{ website.color_2 }};">
+	    <article>
+	        <h1 class="text-left">About Us</h1>
+	        <h2 class="about-info">{{ website.biz_name }}</h2>
+	        <h2 class="about-info">P: {{ website.contact_phone }}</h2>
+	        <h2 class="about-info">E: {{ website.contact_email }}</h2>
+	        <p id="about-about">{{ website.about }}</p>
+	        <div class="post-buttons">
+	            {% if website.facebook %}
+	            <a href="https://www.facebook.com/{{ website.facebook }}/" class="btn btn-outline-info" style="margin: 2.5%; line-height:35px;">
+	                Like Us On Facebook
+	            </a>
+	            {% endif %}
+	            {% if website.instagram %}
+	            <a href="https://www.instagram.com/{{ website.instagram }}" class="btn btn-outline-info" style="margin: 2.5%; line-height:35px;">
+	                Follow Us On Instagram
+	            </a>
+	            {% endif %}
+	        </div>
+	    </article>
+	    <article>
+	        <h1 class="text-left">Location</h1>
+	        <h2 class="about-info">{% if website.show_loc == True %}{{ website.address2 }} {{ website.address }}, {% endif %}{{ website.city }}, {{ website.post_code }}, {{ website.state }}</h2>
+	        <div class="embed-responsive embed-responsive-1by1">
+	           <iframe class="embed-responsive-item" src="https://maps.google.com/maps?width=100%&amp;height=600&amp;hl=en&amp;q={% if website.show_loc == True %}{{ website.address }}+{% endif %}{{ website.city }}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen=""></iframe>
+	        </div>
+	        </article>
+	</section>
+    {% if website.newsletter == True %}
+	    <section class="post-newsletter">
+	        <div class="newsletter-form">
+	        <h1>Newsletter</h1>
+	        <p class="text-center">Sign up to the {{ website.biz_name }} newsletter to keep up to date</p>
+            <form method="post" action="{{ website.domain }}/email/add">
+              {{ form.csrf_token }}
+              {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-10">
+                        {% if newsletter.email.errors %}
+                            {{ newsletter.email(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                            {% for error in newsletter.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ newsletter.email(class="form-control form-control-lg", placeholder="you@email.com")}}
+                        {% endif %}
+                        </div>
+                        <div class="form-group col-md-2">
+                        {{ newsletter.submit(class="btn btn-outline-info")}}
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            </div>
+	    </section>
+	{% endif %}
+	{% if website.gallery == True %}
+	    <section class="post-gallery" style="color:{{ website.color_1 }};background-color:{{ website.color_2 }};">
+	        <h1>Image Gallery</h1>
+	        <article>
+	            {% for image in gallery %}
+    	            <div class="image-holder">
+    	                <a data-target="#view{{ image.id }}Modal" data-toggle="modal"  href="#view{{ image.id }}Modal">
+    	                    <img class="post-image" src="{{ url_for('static', filename='uploads/' + image.img) }}" alt="{{ image.title }}">
+                        </a>
+                	    <div class="modal fade view-image" id="view{{ image.id }}Modal" tabindex="-1" role="dialog" aria-labelledby="view{{ image.id }}ModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                                    <img src="{{ url_for('static', filename='uploads/' + image.img) }}" alt="{{ image.title }}">
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+    	            {% if website.id == current_user.id %}
+    	            <button type="button" class="close" style="font-size: 3em;" data-toggle="modal" data-target="#delete{{ image.id }}Modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+        				    <div class="modal fade" id="delete{{ image.id }}Modal" tabindex="-1" role="dialog" aria-labelledby="delete{{ image.id }}ModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h1 class="modal-title" id="delete{{ image.id }}ModalLabel">Delete Image?</h1>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <form action="{{ url_for('posts.image_delete', image_name=image.id, domain=website.domain) }}" method="POST">
+                                    	<input type="submit" class="btn btn-danger" value="Delete">
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                    {% endif %}
+                </div>
+	            {% endfor %}
+	        </article>
+	        {% if website.id == current_user.id %}
+	            <div class="button-container" style="text-align:center">
+	                <a class="btn btn-secondary btn-sm m-1" style="line-height:40px;" href="{{ url_for('posts.image_gallery_add', domain=current_user.domain) }}">Add Image</a>
+	            </div>
+	        {% endif %}
+	    </section>
+	{% endif %}
+	{% if website.contact_form == True %}
+	    <section class="post-contact" style="border-color: {{ website.color_1 }}; color:{{ website.color_1 }};background-color:{{ website.color_2 }}; ">
+	        <article>
+	        <h1>Contact Us</h1>
+            <form method="post" action="/{{ website.domain }}/contact_form_send">
+              {{ form.csrf_token }}
+              {{ form.hidden_tag() }}
+              <fieldset class="form-group">
+                <div class="form-group">
+                  {{ form.email_acc.label(class="form-control-label") }}
+
+                  {% if form.email_acc.errors %}
+                    {{ form.email_acc(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                      {% for error in form.email_acc.errors %}
+                        <span>{{ error }}</span>
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    {{ form.email_acc(class="form-control form-control-lg")}}
+                  {% endif %}
+                </div>
+                <div class="form-group">
+                  {{ form.phone.label(class="form-control-label") }}
+
+                  {% if form.phone.errors %}
+                    {{ form.phone(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                      {% for error in form.phone.errors %}
+                        <span>{{ error }}</span>
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    {{ form.phone(class="form-control form-control-lg")}}
+                  {% endif %}
+                </div>
+                <div class="form-group">
+                  {{ form.content.label(class="form-control-label") }}
+
+                  {% if form.content.errors %}
+                    {{ form.content(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                      {% for error in form.content.errors %}
+                        <span>{{ error }}</span>
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    {{ form.content(class="form-control form-control-lg")}}
+                  {% endif %}
+                </div>
+              </fieldset>
+              <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info")}}
+              </div>
+            </form>
+            </article>
+	    </section>
+	{% endif %}
+
+	{% include 'footer.html' %}
+    {% if website.no_ads == False %}
+    	<script type="text/javascript">
+            var infolinks_pid = 3160927;
+            var infolinks_wsid = 0;
+        </script>
+        <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
+    {% endif %}
+{% endblock content %}

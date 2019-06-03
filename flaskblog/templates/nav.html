@@ -1,0 +1,12 @@
+<div class="slideshow">
+</div>
+<nav>
+    <a style="text-decoration:none; height: 100%; color: black; display: flex; flex-direction: row;" href="{{ url_for('main.home') }}"><h1 style="font-weight: 300;padding-right: 0%; font-size: 35pt;">REDLANDS</h1><img style="height: 100%; padding-left: 1%;" src="{{ url_for('static', filename='pictures/LOGO.png') }}" alt="Logo"></a>
+    <a href="#about">Learn More</a>
+    <a href="{{ url_for('users.register') }}">Get Started</a>
+    {% if current_user.is_authenticated %}
+                <a href="{{ url_for('users.logout') }}">Logout</a>
+    {% else %}
+                <a href="{{ url_for('users.login') }}">Login</a>
+	{% endif %}
+</nav>
