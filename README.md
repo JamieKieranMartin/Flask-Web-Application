@@ -19,3 +19,4 @@ Essentially users, can: register an account; login to said account; generate a b
 - Charges will automatically be added on to a monthly bill for specific addons using the Stripe API.
 - Forget password and other error routes were implemented and revolve around email authentication as well.
 
+All images, emails and keys have been removed for personal reasons.
