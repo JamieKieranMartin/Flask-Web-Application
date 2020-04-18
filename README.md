@@ -1,7 +1,5 @@
 # Flask Web Application
-Developed Dec 2018 - A Web Application built on Flask which generates a web page for startup businesses. 
-
-Built using flask_sqlalchemy, flask_bcrypt, flask_login, flask_mail, wtforms, jinja2 + the Stripe API.
+Developed Dec 2017 - A Flask WebApp for creating and managing a web page for small businesses 
 
 As a learning project I set out to build a CRUD web application utilising Flask, a micro web framework built on Python. This web application allows users to generate a single page website for their business under the domain name redlands.business. 
 
@@ -19,4 +17,4 @@ Essentially users, can: register an account; login to said account; generate a b
 - Charges will automatically be added on to a monthly bill for specific addons using the Stripe API.
 - Forget password and other error routes were implemented and revolve around email authentication as well.
 
-All images, emails and keys have been removed for personal reasons.
+All images, emails and keys have been hashed out or removed.
